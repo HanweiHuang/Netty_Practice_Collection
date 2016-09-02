@@ -1,4 +1,4 @@
-package com.harvey.netty;
+package com.harvey.hw;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelInitializer;
