@@ -1,4 +1,4 @@
-package com.harvey.hw;
+package com.harvey.connExample;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;

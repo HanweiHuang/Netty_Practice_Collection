@@ -1,4 +1,4 @@
-package com.harvey.hw;
+package com.harvey.connExample;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
