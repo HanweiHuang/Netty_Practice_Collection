@@ -8,6 +8,7 @@ import com.harvey.helloworld.EchoServer;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufProcessor;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
@@ -18,6 +19,7 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.util.ByteProcessor;
 import io.netty.util.CharsetUtil;
 
 public class NettyNioServer {
@@ -52,12 +54,6 @@ public class NettyNioServer {
 								throws Exception {
 							
 							ByteBuf in = (ByteBuf)msg;
-				
-							for (int i = 0; i < in.capacity(); i++) {
-							    byte b = in.getByte(i);
-							    System.out.println((char) b);
-							}
-							//System.out.println("Server received: " + in.toString(CharsetUtil.UTF_8));
 							ctx.write(buf);
 						}
 						@Override
