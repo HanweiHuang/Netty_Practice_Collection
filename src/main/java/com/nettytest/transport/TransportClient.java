@@ -1,14 +1,22 @@
-package com.harvey.helloworld;
+package com.nettytest.transport;
 
 import java.net.InetSocketAddress;
 
+import com.nettytest.helloworld.EchoServer;
+
 import io.netty.bootstrap.Bootstrap;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.EventLoopGroup;
+import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.channel.socket.SocketChannel;
+import io.netty.util.CharsetUtil;
 
 /**
  * 客户端引导需要 host 、port 两个参数连接服务器。
@@ -16,13 +24,13 @@ import io.netty.channel.socket.SocketChannel;
  * @date Sep 5, 2016
  * @time 4:05:37 PM
  */
-public class EchoClient {
+public class TransportClient {
 
 	private final String host;
 	
 	private final int port;
 	
-	public EchoClient(String host, int port){
+	public TransportClient(String host, int port){
 		this.host = host;
 		this.port = port;
 	}
@@ -49,11 +57,28 @@ public class EchoClient {
 		 */
 			@Override
 			protected void initChannel(SocketChannel ch) throws Exception {
-					ch.pipeline().addLast(new EchoClientHandler());
+					ch.pipeline().addLast(new SimpleChannelInboundHandler<ByteBuf>(){
+						@Override
+						public void channelActive(ChannelHandlerContext ctx)
+								throws Exception {
+							ctx.writeAndFlush(Unpooled.copiedBuffer("Netty rocks!",CharsetUtil.UTF_8));
+							
+						}
+						
+						@Override
+						public void channelRead0(ChannelHandlerContext ctx,
+								ByteBuf msg) throws Exception {
+							System.out.println("Client received: " + msg.toString(CharsetUtil.UTF_8));
+							
+						}
+						
+						
+					});
 			}
 		});
 		//连接到远程;等待连接完成
 		ChannelFuture f = b.connect().sync();
+		
 		f.channel().closeFuture().sync();
 		}finally{
 			group.shutdownGracefully();
@@ -71,7 +96,7 @@ public class EchoClient {
 //		
 //		final int port = Integer.parseInt(args[1]);
 		
-		new EchoClient("192.168.0.5", 19000).start();
+		new TransportClient("192.168.0.5", 19000).start();
 		
 	}
 }

@@ -1,10 +1,10 @@
-package com.harvey.transport;
+package com.nettytest.transport;
 
 import java.net.InetSocketAddress;
 import java.nio.charset.Charset;
 import java.util.Random;
 
-import com.harvey.helloworld.EchoServer;
+import com.nettytest.helloworld.EchoServer;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.ByteBuf;

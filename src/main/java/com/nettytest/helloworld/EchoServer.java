@@ -1,4 +1,4 @@
-package com.harvey.helloworld;
+package com.nettytest.helloworld;
 
 import java.net.InetSocketAddress;
 

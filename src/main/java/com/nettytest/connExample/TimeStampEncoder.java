@@ -1,4 +1,4 @@
-package com.harvey.connExample;
+package com.nettytest.connExample;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;

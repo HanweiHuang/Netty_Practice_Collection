@@ -1,4 +1,4 @@
-package com.harvey.connExample;
+package com.nettytest.connExample;
 
 import java.util.List;
 

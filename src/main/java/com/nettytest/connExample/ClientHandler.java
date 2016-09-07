@@ -1,4 +1,4 @@
-package com.harvey.connExample;
+package com.nettytest.connExample;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
