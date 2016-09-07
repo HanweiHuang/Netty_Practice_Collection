@@ -8,6 +8,7 @@ public class ByteBufferTest{
 
 	@Test
 	public void byteBufferWriteTest(){
-		ByteBufferDemo.readFile("files/test.txt");
+		ByteBufferDemo.readFileInString("files/test.txt");
+		ByteBufferDemo.readFileInChar("files/test.txt");
 	}
 }

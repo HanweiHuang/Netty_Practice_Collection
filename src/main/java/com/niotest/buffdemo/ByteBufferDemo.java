@@ -23,30 +23,77 @@ import java.nio.charset.Charset;
  */
 public class ByteBufferDemo {
 	
-	public static void readFile(String filepath){
+	/**
+	 * read file by char
+	 * @param filepath
+	 */
+	public static void readFileInChar(String filepath){
 		RandomAccessFile raf = null;
 		FileChannel channel = null;
 		try {
 			raf = new RandomAccessFile(filepath, "rw");
 		    channel = raf.getChannel();
-			ByteBuffer bb = ByteBuffer.allocate(88);
+		    
+		    //function01
+			ByteBuffer bb = ByteBuffer.allocate(10);
 			int size = channel.read(bb);
+			System.out.print("function 1: ");
 			while(size>0){
 				
-				bb.flip();
-//				while(bb.remaining()>8){
-//					System.out.println(bb.getChar());
-//				}
+				bb.flip(); //return position to 0， let date available to read.
 				
-				/**
-				 * function 2： read toString
-				 */
 				Charset charset = Charset.forName("UTF-8");
-				System.out.println(charset.newDecoder().decode(bb).toString());
+				//System.out.println(charset.newDecoder().decode(bb).toString());
+				CharBuffer cc = charset.newDecoder().decode(bb);
+				
+				while(cc.remaining()>0){
+					System.out.print(cc.get());
+				}
 				
 				bb.clear();//清空缓存给未读完的数据继续读
 				size = channel.read(bb);//当size=0说明没有数据需要读了
 			}
+			
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally{
+			try {
+				raf.close();
+				channel.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	/**
+	 * read file by string
+	 * @param filepath
+	 */
+	public static void readFileInString(String filepath){
+		RandomAccessFile raf = null;
+		FileChannel channel = null;
+		try {
+			raf = new RandomAccessFile(filepath, "rw");
+		    channel = raf.getChannel();
+		    
+		    //function01
+			ByteBuffer bb = ByteBuffer.allocate(10);
+			int size = channel.read(bb);
+			System.out.print("Function 2: ");
+			while(size>0){
+				
+				bb.flip(); //return position to 0， let date available to read.
+				
+				Charset charset = Charset.forName("UTF-8");
+				System.out.print(charset.newDecoder().decode(bb).toString());
+						
+				bb.clear();//清空缓存给未读完的数据继续读
+				size = channel.read(bb);//当size=0说明没有数据需要读了
+			}
+			System.out.println();
 			
 			
 		} catch (FileNotFoundException e) {
@@ -64,6 +111,4 @@ public class ByteBufferDemo {
 			
 		}
 	}
-	
-	
 }
