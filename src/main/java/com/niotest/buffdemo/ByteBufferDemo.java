@@ -10,7 +10,10 @@ import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 
 /**
+ * This example demonstrate how to 
  * write data from channel to buffer and red date from buffer to console
+ * by NIO API. This example provide 2 ways to read date which are read char or read string.
+ * The steps as follows
  * 1 readfile
  * 2 create channel
  * 3 allocate buffer
@@ -91,7 +94,7 @@ public class ByteBufferDemo {
 				System.out.print(charset.newDecoder().decode(bb).toString());
 						
 				bb.clear();//清空缓存给未读完的数据继续读
-				size = channel.read(bb);//当size=0说明没有数据需要读了
+				size = channel.read(bb);//当size=-1说明没有数据需要读了
 			}
 			System.out.println();
 			
