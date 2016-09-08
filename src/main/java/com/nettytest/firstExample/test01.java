@@ -10,7 +10,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 /**
- * From internet an example for implement of Netty read
+ * From internet, an example for implement of Netty read
  * @author HarveySally
  * @date Sep 3, 2016
  * @time 11:33:30 PM
