@@ -32,21 +32,27 @@ public class SelectorServerSocketChannelDemo {
 		ServerSocketChannel channel = null;
 		Selector selector = null;
 		try {
+			//open a serversocketchannel
 			channel = ServerSocketChannel.open();
+			//bind port
 			channel.bind(new InetSocketAddress(19000));
+			//block false
 			channel.configureBlocking(false);
 			
 			selector = Selector.open();
 			channel.register(selector, SelectionKey.OP_ACCEPT);			
 			
 			while(true){
+				//ready for I/O operations , return a set of keys
 				int select = selector.select();
+				
 				if(select > 0){
+					//iterator every key
 					for(SelectionKey key:selector.selectedKeys()){
 						if(key.isAcceptable()){
 							
 							SocketChannel sc = ((ServerSocketChannel)key.channel()).accept();
-							ByteBuffer bf = ByteBuffer.allocate(12);
+							ByteBuffer bf = ByteBuffer.allocate(40);
 							
 							int size = sc.read(bf);
 							
@@ -54,7 +60,7 @@ public class SelectorServerSocketChannelDemo {
 								bf.flip();
 								Charset charset = Charset.forName("UTF-8");
 								System.out.println(charset.newDecoder().decode(bf).toString());
-								bf.clear();
+								//bf.clear();
 								size = sc.read(bf);
 							}
 							bf.clear();
@@ -64,6 +70,7 @@ public class SelectorServerSocketChannelDemo {
 							//writebf.clear();
 							sc.close();
 							
+							//remove the key 
 							selector.selectedKeys().remove(key);
 							
 						}

@@ -8,6 +8,7 @@ import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.ChannelInitializer;
@@ -57,7 +58,9 @@ public class TransportClient {
 		 */
 			@Override
 			protected void initChannel(SocketChannel ch) throws Exception {
-					ch.pipeline().addLast(new SimpleChannelInboundHandler<ByteBuf>(){
+					
+				ch.pipeline().addLast(new ChannelHandlerAdapter(){
+					
 						@Override
 						public void channelActive(ChannelHandlerContext ctx)
 								throws Exception {
@@ -65,13 +68,15 @@ public class TransportClient {
 							
 						}
 						
-						@Override
-						public void channelRead0(ChannelHandlerContext ctx,
-								ByteBuf msg) throws Exception {
-							System.out.println("Client received: " + msg.toString(CharsetUtil.UTF_8));
-							
-						}
 						
+						
+						@Override
+						public void channelRead(ChannelHandlerContext ctx,
+							Object msg) throws Exception {
+							
+							ByteBuf in = (ByteBuf)msg;
+							System.out.println("Client received: " + in.toString(CharsetUtil.UTF_8));
+						}
 						
 					});
 			}

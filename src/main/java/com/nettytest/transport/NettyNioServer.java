@@ -19,7 +19,6 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.util.ByteProcessor;
 import io.netty.util.CharsetUtil;
 
 public class NettyNioServer {
@@ -29,18 +28,24 @@ public class NettyNioServer {
 		final ByteBuf buf = Unpooled.unreleasableBuffer(
                 Unpooled.copiedBuffer("Hi!\r\n", Charset.forName("UTF-8")));
 		
+		//1.event loop group
 		NioEventLoopGroup group = new NioEventLoopGroup();
+		//2.boot strap
 		ServerBootstrap serverBootStrap = null;
 		try {
 			serverBootStrap = new ServerBootstrap();
+			//register group
 			serverBootStrap.group(group);
-			
+			//setting channel
 			serverBootStrap.channel(NioServerSocketChannel.class)
+			//bind address
 			.localAddress(new InetSocketAddress(port))
+			//add handler
 			.childHandler(new ChannelInitializer<SocketChannel>() {
 
 				@Override
 				protected void initChannel(SocketChannel ch) throws Exception {
+					//add handler to pipeline
 					ch.pipeline().addLast(new ChannelInboundHandlerAdapter(){
 //						@Override
 //						public void channelActive(ChannelHandlerContext ctx)
@@ -54,6 +59,10 @@ public class NettyNioServer {
 								throws Exception {
 							
 							ByteBuf in = (ByteBuf)msg;
+							while(in.isReadable()){
+								System.out.print((char)in.readByte());
+								System.out.flush();
+							}
 							ctx.write(buf);
 						}
 						@Override
@@ -72,6 +81,7 @@ public class NettyNioServer {
 				}
 				
 			});
+			//bind a new link channel
 			ChannelFuture cf = serverBootStrap.bind().sync();
 			System.out.println(NettyNioServer.class.getName()+": started and listening to" + cf.channel().localAddress());
 			cf.channel().closeFuture().sync();

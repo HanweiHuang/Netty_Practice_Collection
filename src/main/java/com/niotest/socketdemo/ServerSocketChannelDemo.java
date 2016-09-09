@@ -44,6 +44,7 @@ public class ServerSocketChannelDemo {
 				SocketChannel schannel = sschannel.accept();
 				if(schannel!=null){
 					ByteBuffer bf = ByteBuffer.allocate(36);
+					//read from channel to buffer
 					int size = schannel.read(bf);
 					while(size>0){
 						bf.flip();
@@ -62,7 +63,7 @@ public class ServerSocketChannelDemo {
 					
 					
 					/**
-					 * after read send message back to client
+					 * after read, write message back to client from buffer
 					 */
 					ByteBuffer response = ByteBuffer.wrap("Thank you clients, get your message".getBytes("UTF-8"));
 					schannel.write(response);					
