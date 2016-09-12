@@ -11,25 +11,31 @@ import io.netty.channel.ChannelPromise;
 
 public class TimeServerHandler  extends ChannelHandlerAdapter{
 	
+	private int counter;
+	
+	
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg)
 			throws Exception {
 		
-		ByteBuf byteBuf = (ByteBuf)msg;
-		byte[] temp = new byte[byteBuf.readableBytes()];
-		byteBuf.readBytes(temp);
-		
-		String body = new String(temp,"UTF-8");
-		System.out.println("the time server receive order: "+body);
+//		ByteBuf byteBuf = (ByteBuf)msg;
+//		byte[] temp = new byte[byteBuf.readableBytes()];
+//		byteBuf.readBytes(temp);
+//		
+//		String body = new String(temp,"UTF-8").substring(0,temp.length - System.getProperty("line.separator").length());
+		String body = (String)msg;
+		System.out.println("the time server receive order: "+ body + "; the counter is:"+ ++counter);
 		
 		String currentTime = "QUERY TIME ORDER".equalsIgnoreCase(body) 
 					? new java.util.Date(System.currentTimeMillis()).toString()
 					: "BAD QUERY";
 		
+		currentTime = currentTime + System.getProperty("line.separator");			
+					
 		//put date to buffer
 		ByteBuf response = Unpooled.copiedBuffer(currentTime.getBytes());	
 		
-		ctx.write(response);
+		ctx.writeAndFlush(response);
 	}
 	
 	@Override
