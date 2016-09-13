@@ -1,8 +1,8 @@
 package com.niotest.buffdemo;
 
-import org.junit.Test;
+import io.nio.buffdemo.ByteBufferDemo;
 
-import com.niotest.buffdemo.ByteBufferDemo;
+import org.junit.Test;
 
 public class ByteBufferTest{
 
